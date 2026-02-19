@@ -1,0 +1,262 @@
+﻿<Page x:Class="TCC.ProfilePage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:local="clr-namespace:TCC"
+      Title="ProfilePage">
+
+    <Page.Resources>
+        <!-- Estilo do botão principal (azul) -->
+        <Style x:Key="PrimaryButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="#051D4D"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Padding" Value="15,10"/>
+            <Setter Property="Height" Value="50"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Grid>
+                            <Border x:Name="ShadowBorder" Background="#031538" CornerRadius="8" Margin="0,4,0,0"/>
+                            <Border x:Name="MainBorder" Background="{TemplateBinding Background}" CornerRadius="8" Margin="0,0,0,4">
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#0A2A68"/>
+                </Trigger>
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter Property="Margin" Value="0,4,0,0"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- Estilo do botão secundário (sair) -->
+        <Style x:Key="SecondaryButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="#051D4D10"/>
+            <Setter Property="Foreground" Value="#D98F00"/>
+            <Setter Property="BorderBrush" Value="#D98F00"/>
+            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Padding" Value="15,10"/>
+            <Setter Property="Height" Value="50"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" 
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="8">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#D98F0020"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- Estilo para os campos de informação -->
+        <Style x:Key="InfoFieldStyle" TargetType="Border">
+            <Setter Property="Background" Value="#051D4D15"/>
+            <Setter Property="CornerRadius" Value="8"/>
+            <Setter Property="Padding" Value="15"/>
+            <Setter Property="Margin" Value="0,0,0,15"/>
+            <Setter Property="BorderBrush" Value="#051D4D30"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect ShadowDepth="1" BlurRadius="4" Opacity="0.15" Direction="270"/>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Estilo para ícones circulares -->
+        <Style x:Key="IconCircleStyle" TargetType="Border">
+            <Setter Property="Background" Value="#D98F0030"/>
+            <Setter Property="CornerRadius" Value="50"/>
+            <Setter Property="Width" Value="40"/>
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="Margin" Value="0,0,15,0"/>
+        </Style>
+
+        <!-- Estilo para o botão de mostrar/esconder senha -->
+        <Style x:Key="EyeButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Width" Value="30"/>
+            <Setter Property="Height" Value="30"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" CornerRadius="15">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#44FFFFFF"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- Estilo para TextBox de senha -->
+        <Style x:Key="PasswordTextBoxStyle" TargetType="TextBox">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Padding" Value="0,5,0,0"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="IsReadOnly" Value="True"/>
+        </Style>
+    </Page.Resources>
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <Grid>
+            <!-- Fundo com gradiente -->
+            <Grid.Background>
+                <RadialGradientBrush>
+                    <GradientStop Color="#FF1345A9"/>
+                    <GradientStop Color="#FF051D4D" Offset="1"/>
+                </RadialGradientBrush>
+            </Grid.Background>
+
+            <StackPanel MaxWidth="500" Margin="20" VerticalAlignment="Center">
+                <!-- Cabeçalho -->
+                <TextBlock Text="Meu Perfil" FontSize="32" FontWeight="Bold" Foreground="#FFB87A00" 
+                           HorizontalAlignment="Center" Margin="0,0,0,10"/>
+
+                <!-- Linha decorativa -->
+                <Border Height="4" Width="80" Background="#FFB87A00" CornerRadius="2" 
+                        HorizontalAlignment="Center" Margin="0,0,0,30"/>
+
+                <!-- Avatar -->
+                <Border Width="100" Height="100" CornerRadius="50" Background="#FFB87A00" 
+                        HorizontalAlignment="Center" Margin="0,0,0,30">
+                    <TextBlock x:Name="txtInitials" Text="JS" FontSize="36" FontWeight="Bold" 
+                               Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                </Border>
+
+                <!-- Card principal -->
+                <Border Background="#051D4D" CornerRadius="12" Padding="0" Margin="0,0,0,20" BorderThickness="1">
+                    <Grid>
+                        <!-- Cabeçalho do card -->
+                        <Border Height="70" VerticalAlignment="Top" CornerRadius="12,12,0,0">
+                            <Border.Background>
+                                <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                                    <GradientStop Color="#FF8E5E00" Offset="0"/>
+                                    <GradientStop Color="#B87A00" Offset="1"/>
+                                </LinearGradientBrush>
+                            </Border.Background>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                <TextBlock Text="👤" FontSize="20" Margin="0,0,10,0" VerticalAlignment="Center" Foreground="White"/>
+                                <TextBlock Text="Informações Pessoais" Foreground="White" 
+                                           FontSize="22" FontWeight="Bold" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Border>
+
+                        <!-- Conteúdo do card -->
+                        <StackPanel Margin="20,80,20,20">
+                            <!-- Campo Nome -->
+                            <Border Style="{StaticResource InfoFieldStyle}" Background="{x:Null}" BorderBrush="#FF1345A9">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <Border Style="{StaticResource IconCircleStyle}" Background="#FFD98F00">
+                                        <TextBlock Text="👤" FontSize="18" 
+                                                   HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White"/>
+                                    </Border>
+
+                                    <StackPanel Grid.Column="1">
+                                        <TextBlock Text="Nome" Foreground="#D98F00" FontSize="14"/>
+                                        <TextBlock x:Name="txtNome" Text="João Silva" Foreground="White" 
+                                                   FontSize="18" FontWeight="SemiBold" Margin="0,5,0,0"/>
+                                    </StackPanel>
+                                </Grid>
+                            </Border>
+
+                            <!-- Campo Telefone -->
+                            <Border Style="{StaticResource InfoFieldStyle}" Background="{x:Null}" BorderBrush="#FF1345A9">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <Border Style="{StaticResource IconCircleStyle}" Background="#FFD98F00">
+                                        <TextBlock Text="📱" FontSize="18" 
+                                                   HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White"/>
+                                    </Border>
+
+                                    <StackPanel Grid.Column="1">
+                                        <TextBlock Text="Telefone" Foreground="#D98F00" FontSize="14"/>
+                                        <TextBlock x:Name="txtTelefone" Text="(11) 98765-4321" Foreground="White" 
+                                                   FontSize="18" FontWeight="SemiBold" Margin="0,5,0,0"/>
+                                    </StackPanel>
+                                </Grid>
+                            </Border>
+
+                            <!-- Campo Email -->
+                            <Border Style="{StaticResource InfoFieldStyle}" Background="{x:Null}" BorderBrush="#FF1345A9">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <Border Style="{StaticResource IconCircleStyle}" Background="#FFD98F00">
+                                        <TextBlock Text="📧" FontSize="18" 
+                                                   HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White"/>
+                                    </Border>
+
+                                    <StackPanel Grid.Column="1">
+                                        <TextBlock Text="Email" Foreground="#D98F00" FontSize="14"/>
+                                        <TextBlock x:Name="txtEmail" Text="joao.silva@exemplo.com" Foreground="White" 
+                                                   FontSize="18" FontWeight="SemiBold" Margin="0,5,0,0"/>
+                                    </StackPanel>
+                                </Grid>
+                            </Border>
+
+                           
+
+                            <!-- Botão Editar -->
+                            <Button x:Name="btnEditar" Content="✏️ Editar Informações" 
+                                    Style="{StaticResource PrimaryButtonStyle}" Background="#D98F00" Foreground="#051D4D"
+                                    Click="btnEditar_Click" Margin="0,15,0,15"/>
+
+                            <!-- Botão Sair da Conta -->
+                            <Button x:Name="btnSairDaConta" Content="🚪 Sair da Conta" 
+                                    Style="{StaticResource SecondaryButtonStyle}"
+                                    Click="btnSairDaConta_Click"/>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+
+                <!-- Rodapé -->
+                <TextBlock Text="Última atualização: 19 de Maio, 2025" Foreground="#D98F00" 
+                           FontSize="12" HorizontalAlignment="Center" Margin="0,10,0,0"/>
+            </StackPanel>
+        </Grid>
+    </ScrollViewer>
+</Page>

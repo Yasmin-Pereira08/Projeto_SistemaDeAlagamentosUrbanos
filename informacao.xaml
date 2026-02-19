@@ -1,0 +1,359 @@
+﻿<Page x:Class="TCC.Informacao"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:TCC"
+      mc:Ignorable="d" d:DesignWidth="800"
+      Title="Informacao" Height="844">
+
+    <Page.Resources>
+        <!-- Estilos para a página de informações -->
+        <Style x:Key="TituloSecao" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Margin" Value="10,0,0,0"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+
+        <Style x:Key="SubtituloSecao" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Margin" Value="0,10,0,5"/>
+        </Style>
+
+        <Style x:Key="TextoNormal" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Foreground" Value="#B3E5FC"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
+            <Setter Property="Margin" Value="0,5,0,10"/>
+            <Setter Property="LineHeight" Value="20"/>
+        </Style>
+
+        <Style x:Key="ItemLista" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Foreground" Value="#B3E5FC"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
+            <Setter Property="Margin" Value="5,2,0,2"/>
+        </Style>
+
+        <Style x:Key="IconeCirculo" TargetType="Ellipse">
+            <Setter Property="Width" Value="40"/>
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="Fill" Value="#0D47A1"/>
+            <Setter Property="Margin" Value="5"/>
+        </Style>
+
+        <Style x:Key="IndicadorSeveridade" TargetType="Ellipse">
+            <Setter Property="Width" Value="12"/>
+            <Setter Property="Height" Value="12"/>
+            <Setter Property="Margin" Value="0,0,5,0"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+
+        <!-- Template para o botão de toggle do Expander com texto BRANCO -->
+        <ControlTemplate x:Key="ExpanderToggleButton" TargetType="ToggleButton">
+            <Border Background="#173795" Padding="5" CornerRadius="4 4 0 0">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Ellipse Style="{StaticResource IconeCirculo}" Grid.Column="0"/>
+                    <TextBlock Text="i" FontSize="24" FontWeight="Bold" Foreground="#D4AF37"
+                               HorizontalAlignment="Center" VerticalAlignment="Center"
+                               Grid.Column="0"/>
+
+                    <!-- Alterado para cor BRANCA -->
+                    <ContentPresenter Grid.Column="1" Margin="10,0,0,0" 
+                                      VerticalAlignment="Center" 
+                                      HorizontalAlignment="Left"
+                                      TextElement.Foreground="White"
+                                      TextElement.FontWeight="Bold"
+                                      RecognizesAccessKey="True"/>
+
+                    <Path x:Name="Arrow" Grid.Column="2" Width="10" Height="10" 
+                          Fill="White" Stretch="Uniform" 
+                          HorizontalAlignment="Center" VerticalAlignment="Center"
+                          Data="M 0,0 L 10,0 L 5,5 Z"/>
+                </Grid>
+            </Border>
+            <ControlTemplate.Triggers>
+                <Trigger Property="IsChecked" Value="True">
+                    <Setter TargetName="Arrow" Property="Data" Value="M 0,5 L 10,5 L 5,0 Z"/>
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+
+        <!-- Estilo para o Expander -->
+        <Style x:Key="ExpanderStyle" TargetType="Expander">
+            <Setter Property="Background" Value="#0A2463"/>
+            <Setter Property="BorderBrush" Value="#173795"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Margin" Value="0,0,0,10"/>
+            <Setter Property="Padding" Value="5"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="IsExpanded" Value="False"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Expander">
+                        <Border BorderThickness="{TemplateBinding BorderThickness}" 
+                                BorderBrush="{TemplateBinding BorderBrush}" 
+                                Background="{TemplateBinding Background}"
+                                CornerRadius="5">
+                            <DockPanel>
+                                <ToggleButton x:Name="HeaderSite"
+                                              DockPanel.Dock="Top"
+                                              IsChecked="{Binding Path=IsExpanded, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
+                                              Template="{StaticResource ExpanderToggleButton}"
+                                              Content="{TemplateBinding Header}"/>
+                                <ContentPresenter x:Name="ExpandSite"
+                                                  DockPanel.Dock="Bottom"
+                                                  Visibility="Collapsed"
+                                                  Margin="10,5,10,10"/>
+                            </DockPanel>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsExpanded" Value="True">
+                                <Setter TargetName="ExpandSite" Property="Visibility" Value="Visible"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Page.Resources>
+
+    <ScrollViewer Background="#091F5A" VerticalScrollBarVisibility="Auto" Margin="0" 
+              HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+        <StackPanel Margin="20" VerticalAlignment="Top">
+            <TextBlock Text="Ajuda e Informações" FontSize="35" FontWeight="Bold" Foreground="#FFD98F00" Margin="0,0,0,20" VerticalAlignment="Top" HorizontalAlignment="Center"/>
+
+            <!-- Seção de Introdução -->
+            <Border Background="#0A2463" BorderBrush="#173795" BorderThickness="1" CornerRadius="5" Padding="15" Margin="0,0,0,15">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Ellipse Style="{StaticResource IconeCirculo}" Grid.Column="0"/>
+                    <TextBlock Text="i" FontSize="24" FontWeight="Bold" Foreground="#D4AF37"
+                               HorizontalAlignment="Center" VerticalAlignment="Center"/>
+
+                    <StackPanel Grid.Column="1" Margin="10,0,0,0">
+                        <TextBlock Text="Sobre o Sistema de Alerta de Alagamento" Style="{StaticResource SubtituloSecao}" FontSize="18"/>
+                        <TextBlock Style="{StaticResource TextoNormal}">
+                            Nosso sistema foi desenvolvido para ajudar cidadãos a se manterem informados sobre alagamentos em sua região, 
+                            permitindo que tomem decisões mais seguras sobre deslocamentos e recebam alertas em tempo real.
+                        </TextBlock>
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <!-- Seção Como funcionam os alertas de alagamento -->
+            <Expander Style="{StaticResource ExpanderStyle}" 
+                      Header="Como funcionam os alertas de alagamento" FontSize="16">
+                <StackPanel Margin="10">
+                    <TextBlock Style="{StaticResource TextoNormal}">
+                        Nosso sistema coleta dados usando sensores próprios e dedicados, feitos sob medida para garantir precisão. Para informações sobre o clima e chuva, 
+                        ele integra dados de fontes meteorológicas externas confiáveis, como o Google. Essa combinação nos permite ter dados precisos e atualizados, 
+                        que são essenciais para tomadas de decisão estratégicas.
+                    </TextBlock>
+
+                    <TextBlock Text="Níveis de Severidade" Style="{StaticResource SubtituloSecao}"/>
+                    <Grid Margin="0,5,0,10">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+                        <Ellipse Grid.Row="0" Grid.Column="0" Fill="#FF5252" Style="{StaticResource IndicadorSeveridade}"/>
+                        <TextBlock Grid.Row="0" Grid.Column="1" Style="{StaticResource ItemLista}">
+                            <Run Text="Severo:" FontWeight="SemiBold" Foreground="White"/> Alagamento grave, área intransitável
+                        </TextBlock>
+
+                        <Ellipse Grid.Row="1" Grid.Column="0" Fill="#FFD740" Style="{StaticResource IndicadorSeveridade}"/>
+                        <TextBlock Grid.Row="1" Grid.Column="1" Style="{StaticResource ItemLista}">
+                            <Run Text="Moderado:" FontWeight="SemiBold" Foreground="White"/> Alagamento com trânsito lento
+                        </TextBlock>
+
+                        <Ellipse Grid.Row="2" Grid.Column="0" Fill="#448AFF" Style="{StaticResource IndicadorSeveridade}"/>
+                        <TextBlock Grid.Row="2" Grid.Column="1" Style="{StaticResource ItemLista}">
+                            <Run Text="Leve:" FontWeight="SemiBold" Foreground="White"/> Pequeno alagamento, passagem possível
+                        </TextBlock>
+                    </Grid>
+
+                    <TextBlock Text="Fontes de Dados" Style="{StaticResource SubtituloSecao}"/>
+                    <StackPanel Margin="10,5,0,0">
+                        <TextBlock Style="{StaticResource ItemLista}">• Estações meteorológicas</TextBlock>
+                        <TextBlock Style="{StaticResource ItemLista}">• Sensores de nível de água</TextBlock>
+                        <TextBlock Style="{StaticResource ItemLista}">• Dados de órgãos oficiais</TextBlock>
+                    </StackPanel>
+                </StackPanel>
+            </Expander>
+
+            <!-- Seção Navegando pelo aplicativo -->
+            <Expander Style="{StaticResource ExpanderStyle}" 
+                      Header="Navegando pelo aplicativo" FontSize="16">
+                <StackPanel Margin="10">
+                    <TextBlock Text="Página Inicial" Style="{StaticResource SubtituloSecao}"/>
+                    <TextBlock Style="{StaticResource TextoNormal}">
+                        A página inicial exibe as condições climáticas atuais, previsão do tempo, o mapa de alertas e as legendas de cada tipo de alerta.
+                    </TextBlock>
+
+                    <TextBlock Text="Notificações" Style="{StaticResource SubtituloSecao}"/>
+                    <TextBlock Style="{StaticResource TextoNormal}">
+                        A página de notificações exibe os alertas organizados cronologicamente, com a notificação de alagamento mais recente apresentada no topo. 
+                        É possível realizar buscas por endereços específicos e filtrar as notificações com base no nível de criticidade.
+                    </TextBlock>
+
+                    <TextBlock Text="Perfil" Style="{StaticResource SubtituloSecao}"/>
+                    <TextBlock Style="{StaticResource TextoNormal}">
+                        Gerencie suas informações pessoais, como nome, email, e telefone. Mantenha seus dados
+                        atualizados para receber alertas mais precisos.
+                    </TextBlock>
+
+                    <TextBlock Text="Ajuda" Style="{StaticResource SubtituloSecao}"/>
+                    <TextBlock Style="{StaticResource TextoNormal}">
+                        Esta página contém informações detalhadas sobre como usar o aplicativo, entender os alertas e gerenciar sua
+                        conta.
+                    </TextBlock>
+                </StackPanel>
+            </Expander>
+
+            <!-- Seção Como reagir aos alertas -->
+            <Expander Style="{StaticResource ExpanderStyle}" 
+                      Header="Como reagir aos alertas" FontSize="16">
+                <StackPanel Margin="10">
+                    <TextBlock Text="Alertas Severos (Vermelho)" Style="{StaticResource SubtituloSecao}"/>
+                    <StackPanel Margin="10,5,0,10">
+                        <TextBlock Style="{StaticResource ItemLista}">• Evite completamente a área</TextBlock>
+                        <TextBlock Style="{StaticResource ItemLista}">• Não tente atravessar áreas alagadas de carro ou a pé</TextBlock>
+                        <TextBlock Style="{StaticResource ItemLista}">• Busque rotas alternativas usando a função "Rotas Alternativas"</TextBlock>
+                        <TextBlock Style="{StaticResource ItemLista}">• Se estiver preso, ligue para os serviços de emergência</TextBlock>
+                    </StackPanel>
+
+                    <TextBlock Text="Alertas Moderados (Amarelo)" Style="{StaticResource SubtituloSecao}"/>
+                    <StackPanel Margin="10,5,0,10">
+                        <TextBlock Style="{StaticResource ItemLista}">• Considere rotas alternativas</TextBlock>
+                        <TextBlock Style="{StaticResource ItemLista}">• Se precisar passar pela área, faça-o com extrema cautela</TextBlock>
+                        <TextBlock Style="{StaticResource ItemLista}">• Esteja ciente de que o trânsito estará lento</TextBlock>
+                    </StackPanel>
+
+                    <TextBlock Text="Alertas Leves (Azul)" Style="{StaticResource SubtituloSecao}"/>
+                    <StackPanel Margin="10,5,0,0">
+                        <TextBlock Style="{StaticResource ItemLista}">• Passagem é possível, mas com cuidado</TextBlock>
+                        <TextBlock Style="{StaticResource ItemLista}">• Reduza a velocidade ao passar por áreas com água</TextBlock>
+                        <TextBlock Style="{StaticResource ItemLista}">• Fique atento a mudanças nas condições</TextBlock>
+                    </StackPanel>
+                </StackPanel>
+            </Expander>
+
+            <!-- Seção Gerenciando sua conta -->
+            <Expander Style="{StaticResource ExpanderStyle}" 
+                      Header="Gerenciando sua conta" FontSize="16">
+                <StackPanel Margin="10">
+
+
+                    <TextBlock Text="Alterando seus dados" Style="{StaticResource SubtituloSecao}"/>
+                    <TextBlock Style="{StaticResource TextoNormal}">
+                        Para alterar sua senha, acesse a página de Perfil, clique em "Editar informações" e edite as informações que deseja.
+                    </TextBlock>
+
+
+                </StackPanel>
+            </Expander>
+
+
+
+            <!-- Seção Contato e suporte -->
+            <Expander Style="{StaticResource ExpanderStyle}" 
+                      Header="Contato e suporte" FontSize="16">
+                <StackPanel Margin="10">
+                    <TextBlock Text="Suporte Técnico" Style="{StaticResource SubtituloSecao}"/>
+                    <TextBlock Style="{StaticResource TextoNormal}">
+                        Se você encontrar problemas com o aplicativo, entre em contato com nossa equipe de suporte:
+                    </TextBlock>
+                    <StackPanel Margin="10,5,0,10">
+                        <TextBlock Style="{StaticResource ItemLista}">• Email: sistemaalertalag@gmail.com</TextBlock>
+                        <TextBlock Style="{StaticResource ItemLista}">• Telefone: (41) 99918-6714</TextBlock>
+                        <TextBlock Style="{StaticResource ItemLista}">• Horário de atendimento: Segunda a Sexta, 8h às 18h</TextBlock>
+                    </StackPanel>
+                    
+                    <TextBlock Text="Manual do úsuário" Style="{StaticResource SubtituloSecao}"/>
+                    <TextBlock Style="{StaticResource TextoNormal}">
+                     Caso você esteja tendo dificuldade de usar nossa aplicação clique no link, você será direcionado ao nosso manual de usuário. 
+                    </TextBlock>
+                    <TextBlock FontSize="14" Margin="10">
+                        <Hyperlink Click="AbrirPDF_Click" Foreground="#FFD740" TextDecorations="Underline">
+                        Clique aqui para abrir o manual em PDF
+                        </Hyperlink>
+                    </TextBlock>
+
+                    <TextBlock Text="Emergências" Style="{StaticResource SubtituloSecao}"/>
+                    <TextBlock Style="{StaticResource TextoNormal}">
+                        Para situações de emergência relacionadas a alagamentos, entre em contato com:
+                    </TextBlock>
+                    <StackPanel Margin="10,5,0,10">
+                        <TextBlock Style="{StaticResource ItemLista}">• Defesa Civil: 199</TextBlock>
+                        <TextBlock Style="{StaticResource ItemLista}">• Corpo de Bombeiros: 193</TextBlock>
+                        <TextBlock Style="{StaticResource ItemLista}">• SAMU: 192</TextBlock>
+                    </StackPanel>
+
+                    <Border Background="#FF091738"  BorderBrush="#FFD740" BorderThickness="1" CornerRadius="5" Padding="10" Margin="0,10,0,0">
+                        <StackPanel>
+                            <TextBlock Text="Lembre-se:" FontWeight="Bold" Foreground="#FFD740" FontSize="20"/>
+                            <TextBlock Style="{StaticResource TextoNormal}" FontWeight="SemiBold"  Foreground="#FFD740" FontSize="18">
+                                Este aplicativo é uma ferramenta de informação e não substitui os serviços de emergência oficiais. Em caso
+                                de perigo iminente, sempre ligue para os números de emergência.
+                            </TextBlock>
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+            </Expander>
+
+            <!-- Seção Privacidade e segurança -->
+            <Expander Style="{StaticResource ExpanderStyle}" 
+                      Header="Privacidade e segurança" FontSize="16">
+                <StackPanel Margin="10">
+                    <TextBlock Text="Dados Coletados" Style="{StaticResource SubtituloSecao}"/>
+                    <TextBlock Style="{StaticResource TextoNormal}">
+                        Coletamos apenas os dados necessários para fornecer o serviço, incluindo:
+                    </TextBlock>
+                    <StackPanel Margin="10,5,0,10">
+                        <TextBlock Style="{StaticResource ItemLista}">• Informações de perfil (nome, email, telefone)</TextBlock>
+                        <TextBlock Style="{StaticResource ItemLista}">• Localização (para fornecer alertas relevantes)</TextBlock>
+                    </StackPanel>
+
+                    <TextBlock Text="Como Usamos Seus Dados" Style="{StaticResource SubtituloSecao}"/>
+                    <TextBlock Style="{StaticResource TextoNormal}">
+                        Seus dados são usados exclusivamente para:
+                    </TextBlock>
+                    <StackPanel Margin="10,5,0,10">
+                        <TextBlock Style="{StaticResource ItemLista}">• Fornecer alertas personalizados</TextBlock>
+                        <TextBlock Style="{StaticResource ItemLista}">• Melhorar a precisão do sistema</TextBlock>
+                        <TextBlock Style="{StaticResource ItemLista}">• Comunicações relacionadas ao serviço</TextBlock>
+                    </StackPanel>
+
+                    <TextBlock Text="Segurança" Style="{StaticResource SubtituloSecao}"/>
+                    <TextBlock Style="{StaticResource TextoNormal}">
+                        Implementamos medidas de segurança robustas para proteger seus dados, incluindo criptografia, autenticação
+                        segura e auditorias regulares.
+                    </TextBlock>
+
+                    
+                </StackPanel>
+            </Expander>
+        </StackPanel>
+    </ScrollViewer>
+</Page>

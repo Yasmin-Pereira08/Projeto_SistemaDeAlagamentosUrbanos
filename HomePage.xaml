@@ -1,0 +1,243 @@
+﻿<Page x:Class="TCC.HomePage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:wv2="clr-namespace:Microsoft.Web.WebView2.Wpf;assembly=Microsoft.Web.WebView2.Wpf"
+      Background="#051d4d">
+    <Grid>
+        <Grid.Background>
+            <RadialGradientBrush>
+                <GradientStop Color="#FF13377F"/>
+                <GradientStop Color="#FF051D4D" Offset="1"/>
+            </RadialGradientBrush>
+        </Grid.Background>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- FAIXA DE BOAS-VINDAS (Fora do ScrollViewer para ficar fixa) -->
+        <Border Grid.Row="0"  BorderBrush="#FFD98F00" BorderThickness="0,0,0,1" Padding="20,0,20,12">
+            <Border.Background>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="#FF13377F"/>
+                    <GradientStop Color="#FF051D4D" Offset="1"/>
+                </LinearGradientBrush>
+            </Border.Background>
+            <Border.Effect>
+                <DropShadowEffect ShadowDepth="2" Direction="270" Color="Black" Opacity="0.4" BlurRadius="6"/>
+            </Border.Effect>
+            <Grid>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Bottom">
+                    <TextBlock Text="👋 Bem-vindo(a), " FontSize="25" Foreground="#E0E0E0" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                    <TextBlock x:Name="txtNomeUsuario" Text="Usuário" FontSize="25" FontWeight="Bold" Foreground="#FFD98F00" VerticalAlignment="Center"/>
+                    <TextBlock Text="!" FontSize="25" Foreground="#E0E0E0" VerticalAlignment="Center"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- ScrollViewer para o resto do conteúdo -->
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+            <Grid Height="1050">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <!-- TOPO -->
+                <StackPanel Grid.Row="0" Orientation="Vertical" Margin="0,0,0,5">
+                    <!-- Cabeçalho com gradiente -->
+                    <Border Background="#051d4d">
+                        <Grid>
+                            <TextBlock Text="Sistema de Alerta de Alagamento"
+                                FontSize="35"
+                                FontWeight="Bold"
+                                Foreground="#FFD98F00"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Margin="15">
+                                <TextBlock.Effect>
+                                    <DropShadowEffect ShadowDepth="1" Direction="330" Color="Black" Opacity="0.6" BlurRadius="2"/>
+                                </TextBlock.Effect>
+                            </TextBlock>
+                            
+                        </Grid>
+                        
+                          
+                        
+                    </Border>
+                    
+
+                    <!-- BARRA DE PESQUISA PERSONALIZADA -->
+                    <Border Background="#44000000"
+                        CornerRadius="8"
+                        Padding="10"
+                        Margin="0,15,0,5"
+                        HorizontalAlignment="Center"
+                        Width="380"
+                        BorderBrush="#FFD98F00"
+                        BorderThickness="1">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <!-- Ícone de Lupa -->
+                            <TextBlock Text="🔍"
+                                   FontSize="16"
+                                   VerticalAlignment="Center"
+                                   Foreground="#FFD98F00"
+                                   Margin="5,0"/>
+
+                            <!-- Campo de Pesquisa -->
+                            <TextBox x:Name="txtBusca"
+                                 Grid.Column="1"
+                                 Background="Transparent"
+                                 BorderThickness="0"
+                                 Foreground="White"
+                                 FontSize="14"
+                                 Padding="5,2"
+                                 CaretBrush="#FFD98F00"
+                                 VerticalContentAlignment="Center"
+                                 Text="Para onde deseja ir?"
+                                 GotFocus="TxtBusca_GotFocus"
+                                 LostFocus="TxtBusca_LostFocus" 
+                                 TextChanged="txtBusca_TextChanged"
+                                 KeyDown="txtBusca_KeyDown"/>
+                        </Grid>
+                    </Border>
+                </StackPanel>
+
+                <!-- CONTEÚDO PRINCIPAL -->
+                <Grid Grid.Row="1" Margin="20,5,20,20">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="280"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <!-- Painéis Clima e Chuva (Lado Esquerdo) -->
+                    <StackPanel Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" Orientation="Vertical" Margin="0,0,15,0">
+                        <!-- Painel Clima -->
+                        <Border
+                            CornerRadius="8"
+                            Padding="15"
+                            Margin="0,0,0,15"
+                            BorderBrush="#FF223D78"
+                            BorderThickness="1">
+                            <StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                                    <TextBlock Text="☀️" FontSize="16" Foreground="White" Margin="0,0,8,0"/>
+                                    <TextBlock Text="Clima Atual" FontSize="16" FontWeight="Bold" Foreground="#FFD98F00"/>
+                                </StackPanel>
+                                <TextBlock x:Name="txtTemperatura" Text="24°C" FontSize="22" FontWeight="SemiBold" Foreground="White" Margin="0,5,0,5"/>
+                                <TextBlock x:Name="txtDescricao" Text="Parcialmente nublado" FontSize="14" Foreground="#E0E0E0" TextWrapping="Wrap"/>
+                            </StackPanel>
+                        </Border>
+
+                        <!-- Painel Chuva -->
+                        <Border
+                            CornerRadius="8"
+                            Padding="15"
+                            Margin="0,0,0,15"
+                            BorderBrush="#FF223D78"
+                            BorderThickness="1">
+                            <StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                                    <TextBlock Text="🌧️" FontSize="16" Foreground="White" Margin="0,0,8,0"/>
+                                    <TextBlock Text="Previsão de Chuva" FontSize="16" FontWeight="Bold" Foreground="#FFD98F00"/>
+                                </StackPanel>
+                                <TextBlock x:Name="txtChuva" Text="70%" FontSize="22" FontWeight="SemiBold" Foreground="White" Margin="0,5,0,5"/>
+                                <TextBlock Text="Moderada" FontSize="14" Foreground="#E0E0E0"/>
+                            </StackPanel>
+                        </Border>
+
+                        <!-- Legenda de Alertas (Movida para o lado esquerdo) -->
+                        <Border
+                            CornerRadius="8"
+                            Padding="15"
+                            BorderBrush="#FF223D78"
+                            BorderThickness="1">
+                            <StackPanel>
+                                <TextBlock Text="Legenda de Alertas" FontSize="16" FontWeight="Bold" Foreground="#FFD98F00" 
+                                          Margin="0,0,0,10"/>
+
+                                <!-- Alerta Vermelho -->
+                                <Grid Margin="0,0,0,12">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Border Width="12" Height="12" Background="Red" CornerRadius="6" Margin="0,3,8,0"/>
+                                    <StackPanel Grid.Column="1">
+                                        <TextBlock Text="Alta criticidade" Foreground="Red" FontWeight="Medium" FontSize="14"/>
+                                        <TextBlock Text="Áreas com alagamento severo, risco à vida, necessidade de evacuação imediata e possíveis danos estruturais graves." 
+                                                   Foreground="#E0E0E0" FontSize="12" TextWrapping="Wrap" Margin="0,2,0,0"/>
+                                    </StackPanel>
+                                </Grid>
+
+                                <!-- Alerta Amarelo -->
+                                <Grid Margin="0,0,0,12">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Border Width="12" Height="12" Background="Gold" CornerRadius="6" Margin="0,3,8,0"/>
+                                    <StackPanel Grid.Column="1">
+                                        <TextBlock Text="Média criticidade" Foreground="Gold" FontWeight="Medium" FontSize="14"/>
+                                        <TextBlock Text="Áreas com alagamento moderado, vias parcialmente bloqueadas, dificuldade de locomoção e possíveis danos materiais." 
+                                                   Foreground="#E0E0E0" FontSize="12" TextWrapping="Wrap" Margin="0,2,0,0"/>
+                                    </StackPanel>
+                                </Grid>
+
+                                <!-- Alerta Azul -->
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Border Width="12" Height="12" Background="SkyBlue" CornerRadius="6" Margin="0,3,8,0"/>
+                                    <StackPanel Grid.Column="1">
+                                        <TextBlock Text="Baixa criticidade" Foreground="SkyBlue" FontWeight="Medium" FontSize="14"/>
+                                        <TextBlock Text="Áreas com acúmulo de água, sem bloqueio significativo de vias, mas com potencial para piorar em caso de chuvas contínuas." 
+                                                   Foreground="#E0E0E0" FontSize="12" TextWrapping="Wrap" Margin="0,2,0,0"/>
+                                    </StackPanel>
+                                </Grid>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+
+                    <!-- Mapa (Lado Direito) - Tamanho reduzido -->
+                    <Border Grid.Column="1" Grid.Row="0" Grid.RowSpan="2"
+                        Background="#071640"
+                        CornerRadius="8"
+                        Padding="0"
+                        Height="500"
+                        VerticalAlignment="Top"
+                        BorderBrush="#FF223D78"
+                        BorderThickness="1">
+                        <Grid Margin="0,0,0,-222">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+
+                            <!-- Cabeçalho do Mapa -->
+                            <Border Grid.Row="0" Background="#061230" BorderBrush="#FF223D78" BorderThickness="0,0,0,1" Padding="10">
+                                <TextBlock Text="Mapa de Alertas de Alagamento" FontSize="16" FontWeight="Bold" Foreground="#FFD98F00" 
+                                          HorizontalAlignment="Center"/>
+                            </Border>
+
+                            <!-- Conteúdo do Mapa -->
+                            <wv2:WebView2 Grid.Row="1" x:Name="webViewMapa" Margin="0"/>
+                        </Grid>
+                    </Border>
+                </Grid>
+            </Grid>
+        </ScrollViewer>
+    </Grid>
+</Page>

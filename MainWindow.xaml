@@ -1,0 +1,315 @@
+﻿<Window x:Class="TCC.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Login" Height="645" Width="845" Background="#00134D"
+        WindowState="Maximized">
+
+    <Window.Resources>
+        <!-- ErrorTemplate com ícone de erro e tooltip -->
+        <ControlTemplate x:Key="ValidationErrorTemplate">
+            <DockPanel LastChildFill="True">
+                <TextBlock Text="!" Foreground="Red" FontWeight="Bold" ToolTip="{Binding [0].ErrorContent}" Margin="5,0"/>
+                <AdornedElementPlaceholder/>
+            </DockPanel>
+        </ControlTemplate>
+
+        <!-- Style para campos com erro -->
+        <Style TargetType="TextBox">
+            <Style.Triggers>
+                <Trigger Property="Validation.HasError" Value="True">
+                    <Setter Property="ToolTip"
+                            Value="{Binding RelativeSource={RelativeSource Self},
+                                            Path=(Validation.Errors)[0].ErrorContent}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style TargetType="PasswordBox">
+            <Style.Triggers>
+                <Trigger Property="Validation.HasError" Value="True">
+                    <Setter Property="ToolTip"
+                            Value="{Binding RelativeSource={RelativeSource Self},
+                                            Path=(Validation.Errors)[0].ErrorContent}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="CustomPasswordBoxStyle" TargetType="PasswordBox">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderBrush" Value="#FFABADB3"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="Padding" Value="10"/>
+            <!-- Estilo quando desabilitado -->
+            <Style.Triggers>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Opacity" Value="0.5"/>
+                    <Setter Property="Background" Value="#22000000"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- Style para TextBox que simula PasswordBox -->
+        <Style x:Key="CustomTextBoxStyle" TargetType="TextBox">
+            <Setter Property="BorderBrush" Value="#FFABADB3"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="Padding" Value="10"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        CornerRadius="3">
+                            <ScrollViewer x:Name="PART_ContentHost"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Estilo de botão amarelo com hover -->
+        <Style x:Key="AmareloHoverButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="#FFD98F00"/>
+            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" CornerRadius="05">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#FFFFF244"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="AmareloHoverMENUButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="#FFD98F00"/>
+            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" CornerRadius="20">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#FFFFF244"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- Estilo de botão azul com hover -->
+        <Style x:Key="AzulHoverButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="#FF002060"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" CornerRadius="40">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#FF002060"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- Estilo para o botão do olho -->
+        <Style x:Key="EyeButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Width" Value="30"/>
+            <Setter Property="Height" Value="30"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#44FFFFFF"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- Estilo para mensagens de erro -->
+        <Style x:Key="ErrorTextStyle" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="#FF5252"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Margin" Value="0,5,0,0"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
+        </Style>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.Background>
+            <RadialGradientBrush>
+                <GradientStop Color="#FF0053FF" Offset="0"/>
+                <GradientStop Color="#FF002060" Offset="1"/>
+            </RadialGradientBrush>
+        </Grid.Background>
+
+        <!-- Main content container - centered both horizontally and vertically -->
+        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Width="400">
+            <!-- Cabeçalho -->
+            <TextBlock Text="Bem-vindo" Foreground="#FFD98F00" FontSize="56" FontWeight="Bold" TextAlignment="Center"/>
+            <TextBlock Text="Acesse sua conta ou crie uma nova" Foreground="White" FontSize="20" TextAlignment="Center" Margin="0,5,0,20"/>
+
+            <!-- Botões Login/Cadastro -->
+            <Grid Background="#002060"  Height="40" Width="400" Margin="0,0,0,20">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Button x:Name="btnLogin" Content="Login" Grid.Column="0" Click="BtnLogin_Click" 
+                        Style="{StaticResource AzulHoverButtonStyle}"
+                        FontFamily="Microsoft Sans Serif" FontSize="20" FontWeight="Bold" BorderBrush="{x:Null}"/>
+                <Button x:Name="btnCadastro" Content="Cadastro" Grid.Column="1" Click="BtnCadastro_Click" 
+                        Style="{StaticResource AmareloHoverMENUButtonStyle}"
+                        FontFamily="Microsoft Sans Serif" FontSize="20" FontWeight="Bold" BorderBrush="{x:Null}"/>
+            </Grid>
+
+            <!-- LOGIN -->
+            <Border x:Name="LoginPanel"  Visibility="Visible" Padding="20" CornerRadius="0" Margin="0,0,0,20" Background="#FF002060">
+                <StackPanel>
+                    <TextBlock Text="Email" Foreground="White" FontSize="18"/>
+                    <TextBox x:Name="txtEmailLOGIN" Height="40" Background="#003399" Foreground="White" Padding="10"  ToolTip="exemplo123@teste.com"/>
+                    <TextBlock x:Name="txtErroEmailLOGIN" Style="{StaticResource ErrorTextStyle}" 
+                               Visibility="Collapsed"/>
+
+                    <TextBlock Text="Senha" Foreground="White" FontSize="18" Margin="0,10,0,0"/>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <!-- PasswordBox para senha oculta -->
+                        <PasswordBox x:Name="txtSenhaLOGIN" Grid.Column="0" Height="40" Background="#003399" Foreground="White" Padding="10,10,40,10" ToolTip="exemplo: senha123"/>
+                        <!-- TextBox para senha visível (inicialmente oculto) -->
+                        <TextBox x:Name="txtSenhaLOGINVisible" Grid.Column="0" Height="40" Background="#003399" Foreground="White" Padding="10,10,40,10"
+                                  Style="{StaticResource CustomTextBoxStyle}" Visibility="Collapsed" CaretBrush="White" FontSize="12" FontWeight="Normal" BorderBrush="White"/>
+                        <!-- Botão do olho -->
+                        <Button x:Name="btnToggleSenhaLOGIN" Grid.Column="1" Content="🚫" Style="{StaticResource EyeButtonStyle}"
+                                 Click="BtnToggleSenhaLOGIN_Click" ToolTip="Mostrar/Ocultar senha" Margin="5,0,0,0" BorderBrush="White"/>
+                    </Grid>
+                    <TextBlock x:Name="txtErroSenhaLOGIN" Style="{StaticResource ErrorTextStyle}" 
+                               Visibility="Collapsed"/>
+
+                    <!-- Ícone de sucesso -->
+                    <TextBlock x:Name="txtSucessoLogin"
+                        FontSize="16"
+                        Text="✔️"
+                        Foreground="Green"
+                        ToolTip="Login bem-sucedido!"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Right"
+                        Margin="0,10,10,0"
+                        Visibility="Collapsed"/>
+
+                    <Button Content="Esqueceu a senha?" FontSize="20" Click="BtnEsqueci_Click"  Foreground="Gold" Width="185" BorderBrush="{x:Null}" Margin="0,10,0,0" Background="{x:Null}" Cursor="Hand"/>
+                    <Button Content="Entrar" Margin="0,20,0,0" Click="BtnEntrar_Click" Style="{StaticResource AmareloHoverButtonStyle}" FontSize="18"/>
+                    <Button Content="Ir para pagina principal" Click="BtnirpgPrincipal_Click" Style="{StaticResource AmareloHoverButtonStyle}" Margin="0,10,0,0" FontSize="18"/>
+                </StackPanel>
+            </Border>
+
+            <!-- CADASTRO -->
+            <Border x:Name="CadastroPanel" Visibility="Collapsed" Background="#002060" Padding="20" CornerRadius="0">
+                <StackPanel>
+                    <!-- Nome -->
+                    <TextBlock Text="Nome de usuário" Foreground="White" FontSize="18"/>
+                    <TextBox x:Name="txtNome" Height="40" Background="#003399" Foreground="White" Padding="10" ToolTip="Exemplo: Maria Aparecida"/>
+                    <TextBlock x:Name="txtErroNome" Style="{StaticResource ErrorTextStyle}" 
+                               Visibility="Collapsed"/>
+
+                    <!-- Email -->
+                    <TextBlock Text="Email" Foreground="White" FontSize="18" Margin="0,10,0,0"/>
+                    <TextBox x:Name="txtEmail" Height="40" Background="#003399" Foreground="White" Padding="10" ToolTip="Exemplo: exemplo2@teste.com"/>
+                    <TextBlock x:Name="txtErroEmail" Style="{StaticResource ErrorTextStyle}" 
+                               Visibility="Collapsed"/>
+
+                    <!-- Telefone -->
+                    <TextBlock Text="Telefone" Foreground="White" FontSize="18" Margin="0,10,0,0"/>
+                    <TextBox x:Name="txtTelefone" Height="40" Background="#003399" Foreground="White" Padding="10" ToolTip="Exemplo: (01) 2 3456-7891"/>
+                    <TextBlock x:Name="txtErroTelefone" Style="{StaticResource ErrorTextStyle}" 
+                               Visibility="Collapsed"/>
+
+                    <!-- Senha -->
+                    <TextBlock Text="Senha" Foreground="White" FontSize="18" Margin="0,10,0,0"/>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <!-- PasswordBox para senha oculta -->
+                        <PasswordBox x:Name="txtSenha" Grid.Column="0" Height="40" Background="#003399" Foreground="White" Padding="10,10,40,10" ToolTip="Exemplo: senha123"/>
+                        <!-- TextBox para senha visível (inicialmente oculto) -->
+                        <TextBox x:Name="txtSenhaVisible" Grid.Column="0" Height="40" Background="#003399" Foreground="White" Padding="10,10,40,10"
+                                  Style="{StaticResource CustomTextBoxStyle}" Visibility="Collapsed"/>
+                        <!-- Botão do olho -->
+                        <Button x:Name="btnToggleSenha" Grid.Column="1" Content="🚫" Style="{StaticResource EyeButtonStyle}"
+                                 Click="BtnToggleSenha_Click" ToolTip="Mostrar/Ocultar senha" Margin="5,0,0,0"/>
+                    </Grid>
+                    <TextBlock x:Name="txtErroSenha" Style="{StaticResource ErrorTextStyle}" 
+                               Visibility="Collapsed"/>
+
+                    <!-- Confirmar senha -->
+                    <TextBlock Text="Confirmar senha" Foreground="White" FontSize="18" Margin="0,10,0,0"/>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <!-- PasswordBox para confirmar senha oculta -->
+                        <PasswordBox x:Name="txtConfirmaSenha" Grid.Column="0" Height="40" Background="#003399" Foreground="White" Padding="10,10,40,10" ToolTip="Exemplo: senha123"/>
+                        <!-- TextBox para confirmar senha visível (inicialmente oculto) -->
+                        <TextBox x:Name="txtConfirmaSenhaVisible" Grid.Column="0" Height="40" Background="#003399" Foreground="White" Padding="10,10,40,10"
+                                  Style="{StaticResource CustomTextBoxStyle}" Visibility="Collapsed"/>
+                        <!-- Botão do olho -->
+                        <Button x:Name="btnToggleConfirmaSenha" Grid.Column="1" Content="🚫" Style="{StaticResource EyeButtonStyle}"
+                                 Click="BtnToggleConfirmaSenha_Click" ToolTip="Mostrar/Ocultar senha" Margin="5,0,0,0"/>
+                    </Grid>
+                    <TextBlock x:Name="txtErroConfirmaSenha" Style="{StaticResource ErrorTextStyle}" 
+                               Visibility="Collapsed"/>
+
+                    <Button Content="Cadastrar" Margin="0,20,0,0" Click="BtnCadastrar_Click" Style="{StaticResource AmareloHoverButtonStyle}" FontSize="16"/>
+                </StackPanel>
+            </Border>
+
+            <TextBlock Text="© 2025 Sistema de Alerta de Alagamento. Todos os direitos reservados." Foreground="#FF3F7EFF" FontSize="12" HorizontalAlignment="Center" Margin="0,0,0,0"/>
+        </StackPanel>
+    </Grid>
+</Window>
